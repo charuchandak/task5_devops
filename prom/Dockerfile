@@ -4,8 +4,8 @@ RUN wget https://github.com/prometheus/prometheus/releases/download/v2.18.1/prom
 RUN tar -xzf prometheus-2.18.1.linux-amd64.tar.gz
 RUN mkdir prom_data
 RUN cp -rvf prometheus-2.18.1.linux-amd64/* /
-ENTRYPOINT [ "./prometheus-2.18.1.linux-amd64/prometheus" ]
-CMD [ "--storage.tsdb.path='prom_data'","--config.file='/prometheus-2.18.1.linux-amd64/prometheus.yml'" ]
+ENTRYPOINT [ "./prometheus" ]
+CMD [ "--storage.tsdb.path='prom_data'" ]
 EXPOSE 9090
 
 
