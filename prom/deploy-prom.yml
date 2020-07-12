@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: prometheus-deploy
+    labels:
+      app: prometheus 
+spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: prometheus
+    template:
+      metadata:
+        name: my-prom
+        labels: 
+          app: prometheus
+      spec: 
+        volumes: 
+          - name: prom-data
+            persistentVolumeClaim: 
+              claimName: prometheus-pvc
+          - name: prom-script
+            configMap: 
+              name: prom-script
+        containers: 
+          - name: prometheus-con
+            image: charuchandak/prometheus:v1 
+            imagePullPolicy: IfNotPresent
+            args:
+            - '--config.file=/prometheus.yml'
+            ports:
+              - containerPort: 9090
+                name: "prom-server" 
+            volumeMounts:
+              - mountPath: "prom_data/"
+                name: prom-data
+              - mountPath: /prometheus.yml
+                subPath: prometheus.yml
+                name: prom-script
+
+        restartPolicy: Always
+
